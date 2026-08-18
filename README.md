@@ -1,167 +1,148 @@
-# NOAA Sea Surface Temperature ETL Pipeline
+NOAA Gulf Stream SST ETL Pipeline
+Project Overview
 
-## Project Overview
+This project is a simple ETL pipeline built with Python that retrieves daily sea surface temperature (SST) data from NOAA, processes the data, performs basic quality checks, and saves the results to local files.
 
-This project is a Python-based ETL pipeline for extracting, transforming,
-validating, and storing daily Sea Surface Temperature (SST) data from NOAA.
+The project demonstrates a simple end-to-end data engineering workflow:
 
-The pipeline retrieves SST data for a specified geographic location and date
-range, performs basic data quality checks, and saves the processed data to CSV.
+Extract → Transform → Validate → Load
 
-## Architecture
+Data Source
 
-The project follows a simple ETL architecture:
+The pipeline uses NOAA's publicly available sea surface temperature dataset.
 
-NOAA NetCDF Dataset
-        |
-        v
-   Data Extraction
-        |
-        v
-   Data Transformation
-        |
-        v
-   Data Quality Checks
-        |
-        +----> CSV output
-        |
-        +----> Quality report
-        |
-        +----> Pipeline log
+The dataset contains:
 
-The project separates configuration, ETL logic, and pipeline orchestration
-into dedicated modules.
+Date
+Latitude
+Longitude
+Sea Surface Temperature (SST)
 
-- `config.py` — configuration parameters and file paths
-- `etl.py` — data validation, extraction, transformation and quality checks
-- `main.py` — pipeline orchestration and output management
+SST values are provided in degrees Celsius.
 
-## Data Source
-
-The project uses the NOAA High-resolution Blended Analysis dataset.
-
-The dataset provides daily Sea Surface Temperature data on a 0.25° spatial grid.
-
-## Technologies
-
-- Python
-- Pandas
-- NumPy
-- Xarray
-- NetCDF4
-- NOAA NetCDF data
-
-## Pipeline
-
-The pipeline consists of the following steps:
-
-1. Validate input parameters
-2. Open the NOAA dataset
-3. Select the requested date
-4. Find the nearest available grid point
-5. Extract Sea Surface Temperature
-6. Handle missing values
-7. Generate a data quality report
-8. Save the processed data to CSV
-
-## Project Structure
-
-etl_gulfstream/
-├── main.py
+Project Structure
+noaa-etl-gulfstream-pipeline/
+│
 ├── config.py
-├── etl.py
+├── main.py
+├── pipeline.py
 ├── requirements.txt
 ├── README.md
-├── .gitignore
-└── output/
-    └── sst_data.csv
+│
+├── output/
+│   ├── sst_result.csv
+│   └── quality_report.json
+│
+└── logs/
+    └── pipeline.log
+Pipeline Workflow
+1. Extract
+
+The pipeline downloads the NOAA dataset and loads it using xarray.
+
+2. Transform
+
+The required date and geographic coordinates are selected from the dataset.
+
+The pipeline extracts the corresponding SST value for the requested location.
+
+3. Validate
+
+The pipeline performs several validation checks, including:
+
+Input parameter validation
+Date availability
+Missing SST values
+Data quality checks
+
+A quality report is generated in JSON format.
+
+4. Load
+
+The processed result is saved as a CSV file.
+
+The quality report is saved separately as a JSON file.
+
+Pipeline execution details are also written to a log file.
 
 Configuration
 
-The main parameters are defined in config.py:
+Pipeline parameters are stored in config.py.
 
-Start date
-End date
-Latitude
-Longitude
-NOAA dataset URL
-Output file
+Example parameters include:
 
-Example:
+TARGET_LAT = 40.125
+TARGET_LON = 290.125
 
-START_DATE = "2026-08-01"
+
+START_DATE = "2026-01-01"
 END_DATE = "2026-08-12"
 
-TARGET_LAT = 40.0
-TARGET_LON = -70.0
 
-Output
-
-The pipeline produces a CSV file containing:
-
-Date
-Requested latitude
-Requested longitude
-Actual grid latitude
-Actual grid longitude
-SST
-Status
-
-Example:
-
-date,requested_lat,requested_lon,actual_lat,actual_lon,sst,status
-2026-08-12,40.0,-70.0,40.125,-69.875,25.09,success
-
-Data Quality
-
-The pipeline identifies several possible statuses:
-
-success — SST value successfully retrieved
-sst_missing — SST value is missing
-date_not_available — requested date is not available
-
-A quality report provides the number of records processed and the number
-of successful and unsuccessful records.
-
+OUTPUT_FILE = "output/sst_result.csv"
+QUALITY_REPORT_FILE = "output/quality_report.json"
 Installation
 
-Create a virtual environment:
-
-python -m venv .venv
-
-Activate the environment and install dependencies:
+Clone the repository and install the required Python packages:
 
 pip install -r requirements.txt
-
-Usage
+Running the Pipeline
 
 Run the pipeline with:
 
 python main.py
 
-The processed data will be saved to the configured output file.
+The pipeline will:
 
-                 NOAA NetCDF
-                      │
-                      ▼
-               ┌─────────────┐
-               │   main.py   │
-               │ Orchestration│
-               └──────┬──────┘
-                      │
-                      ▼
-               ┌─────────────┐
-               │    etl.py   │
-               │             │
-               │ Validation  │
-               │ Extraction  │
-               │ Transform   │
-               │ Data Quality│
-               └──────┬──────┘
-                      │
-                      ▼
-                pandas DataFrame
-                      │
-             ┌────────┴────────┐
-             ▼                 ▼
-          CSV output      Quality report
+Validate the configuration parameters.
+Load the NOAA dataset.
+Extract the requested SST value.
+Perform data quality checks.
+Save the result to CSV.
+Generate a quality report.
+Write execution logs.
+Example Output
+
+Example pipeline result:
+
+Date: 2026-08-12T00:00:00
+Latitude: 40.125
+Longitude: 290.125
+SST: 25.09 °C
+Output Files
+sst_result.csv
+
+Contains the processed SST result for the requested location and date.
+
+quality_report.json
+
+Contains the results of the data quality checks performed during the pipeline execution.
+
+pipeline.log
+
+Contains information about pipeline execution, including processing steps and errors.
+
+Technologies
+Python
+Pandas
+Xarray
+NumPy
+NOAA data
+CSV
+JSON
+Logging
+Key Features
+ETL pipeline structure
+External scientific data source
+Parameter validation
+Data quality checks
+Error handling
+Logging
+Configuration management
+CSV and JSON output
+Modular Python code
+Purpose
+
+This project was created as a practical example of a Python-based ETL pipeline for data engineering tasks.
+
+It demonstrates how external data can be extracted, transformed, validated, and loaded into structured output files using Python.
