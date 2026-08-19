@@ -1,6 +1,5 @@
 import logging
 import json
-from pathlib import Path
 
 import xarray as xr
 
@@ -69,11 +68,8 @@ def main():
 
     except Exception as e:
 
-        logger.error(f"Failed to open NOAA dataset: {e}")
+        logger.error(f"Pipeline failed: {e}")
         raise
-
-    # Run pipeline
-    # df, quality_report = run_pipeline(ds, START_DATE, END_DATE, TARGET_LAT, TARGET_LON)
 
     # Save results to CSV
     df.to_csv(

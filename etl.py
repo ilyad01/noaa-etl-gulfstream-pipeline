@@ -9,6 +9,7 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
+
 def validate_parameters(start_date, end_date, target_lat, target_lon):
 
     # Validate dates
@@ -30,6 +31,7 @@ def validate_parameters(start_date, end_date, target_lat, target_lon):
         raise ValueError("Longitude must be between -180 and 180.")
 
     logger.info("Input parameters validated successfully.")
+
 
 def get_sst(ds, target_date, target_lat, target_lon):
 
@@ -109,6 +111,7 @@ def get_sst(ds, target_date, target_lat, target_lon):
         "status": "success"
     }
 
+
 def get_sst_timeseries(ds, dates, target_lat, target_lon):
 
     results = []
@@ -125,6 +128,7 @@ def get_sst_timeseries(ds, dates, target_lat, target_lon):
         results.append(result)
 
     return results
+
 
 def run_pipeline(ds, start_date, end_date, target_lat, target_lon):
 
@@ -158,6 +162,7 @@ def run_pipeline(ds, start_date, end_date, target_lat, target_lon):
     logger.info(f"Status summary:\n{df['status'].value_counts().to_string()}")
 
     return df, quality_report
+
 
 def generate_quality_report(df):
 
