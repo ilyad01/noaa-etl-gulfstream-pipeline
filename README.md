@@ -8,7 +8,7 @@ The project demonstrates a simple end-to-end data engineering workflow:
 **Extract → Transform → Validate → Load**
 ## Data Source
 
-The pipeline uses NOAA's publicly available sea surface temperature dataset.
+The pipeline uses NOAA's publicly available daily NOAA OISST sea surface temperature dataset.
 
 The dataset contains:
 
@@ -23,7 +23,7 @@ SST values are provided in degrees Celsius.
 
 ### 1. Extract
 
-The pipeline downloads the NOAA dataset and loads it using `xarray`.
+The pipeline connects to the NOAA dataset and loads it using "xarray".
 
 ### 2. Transform
 
@@ -54,7 +54,7 @@ Pipeline execution details are also written to a log file.
 The project is organized into separate modules for configuration, pipeline logic, output files, and logging.
 - config.py — pipeline configuration and parameters
 - main.py — main entry point
-- pipeline.py — ETL pipeline logic
+- etl.py — ETL pipeline logic
 - requirements.txt — Python dependencies
 - output/ — generated CSV and JSON files
 - logs/ — pipeline execution logs
@@ -97,12 +97,12 @@ Example pipeline result:
 ```text
 Date: 2026-08-12T00:00:00
 Latitude: 40.125
-Longitude: 290.125
+Longitude: -69.875
 SST: 25.09 °C
 ```
 
 ## Output Files
-sst_result.csv — contains the processed SST result for the requested location and date.
+sst_data.csv — contains the processed SST result for the requested location and date.
 quality_report.json — contains the results of the data quality checks.
 pipeline.log — contains information about pipeline execution, including processing steps and errors.
 
