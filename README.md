@@ -127,6 +127,16 @@ pipeline.log — contains information about pipeline execution, including proces
 - CSV and JSON output
 - Modular Python code
 
+## What This Project Demonstrates
+- Building a modular Python ETL pipeline
+- Working with external scientific data sources
+- Processing NetCDF data with Xarray
+- Parameter validation and error handling
+- Data quality monitoring
+- Structured logging
+- Configuration management
+- Generating CSV and JSON outputs
+
 ## Purpose
 This project was created as a practical example of a Python-based ETL pipeline for data engineering tasks.
 It demonstrates how external data can be extracted, transformed, validated, and loaded into structured output files using Python.
