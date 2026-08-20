@@ -8,8 +8,7 @@ from config import (
     NOAA_URL,
     START_DATE,
     END_DATE,
-    TARGET_LAT,
-    TARGET_LON,
+    GULF_STREAM_POINTS,
     OUTPUT_FILE,
     QUALITY_REPORT_FILE
 )
@@ -45,8 +44,7 @@ def main():
     validate_parameters(
         START_DATE,
         END_DATE,
-        TARGET_LAT,
-        TARGET_LON
+        GULF_STREAM_POINTS
     )
 
 
@@ -62,8 +60,7 @@ def main():
                 ds,
                 START_DATE,
                 END_DATE,
-                TARGET_LAT,
-                TARGET_LON
+                GULF_STREAM_POINTS
             )
 
     except Exception as e:

@@ -10,7 +10,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def validate_parameters(start_date, end_date, target_lat, target_lon):
+def validate_parameters(start_date, end_date, points):
 
     # Validate dates
     try:
@@ -22,13 +22,20 @@ def validate_parameters(start_date, end_date, target_lat, target_lon):
     if start_date > end_date:
         raise ValueError("START_DATE cannot be later than END_DATE.")
 
-    # Validate latitude
-    if not -90 <= target_lat <= 90:
-        raise ValueError("Latitude must be between -90 and 90.")
+    if not points:
+        raise ValueError("At least one Gulf Stream point is required.")
 
-    # Validate longitude
-    if not -180 <= target_lon <= 180:
-        raise ValueError("Longitude must be between -180 and 180.")
+    for point in points:
+
+        if not -90 <= point["lat"] <= 90:
+            raise ValueError(
+                f"Invalid latitude for {point['name']}."
+            )
+
+        if not -180 <= point["lon"] <= 180:
+            raise ValueError(
+                f"Invalid longitude for {point['name']}."
+            )
 
     logger.info("Input parameters validated successfully.")
 
@@ -112,29 +119,37 @@ def get_sst(ds, target_date, target_lat, target_lon):
     }
 
 
-def get_sst_timeseries(ds, dates, target_lat, target_lon):
+def get_sst_timeseries(ds, dates, points):
 
     results = []
 
-    for date in dates:
+    for point in points:
 
-        result = get_sst(
-            ds,
-            date,
-            target_lat,
-            target_lon
-        )
+        point_name = point["name"]
+        target_lat = point["lat"]
+        target_lon = point["lon"]
 
-        results.append(result)
+        for date in dates:
+
+            result = get_sst(
+                ds,
+                date,
+                target_lat,
+                target_lon
+            )
+
+            result["point_name"] = point_name
+
+            results.append(result)
 
     return results
 
 
-def run_pipeline(ds, start_date, end_date, target_lat, target_lon):
+def run_pipeline(ds, start_date, end_date, points):
 
     logger.info(
         f"Starting pipeline for {start_date} to {end_date}, "
-        f"location: {target_lat}, {target_lon}"
+        f"location: {len(points)}"
     )
 
     dates = pd.date_range(
@@ -146,8 +161,7 @@ def run_pipeline(ds, start_date, end_date, target_lat, target_lon):
     results = get_sst_timeseries(
         ds,
         dates,
-        target_lat,
-        target_lon
+        points
     )
 
     df = pd.DataFrame(results)
@@ -182,3 +196,4 @@ def generate_quality_report(df):
         "missing_sst": int(missing_records),
         "unavailable_dates": int(unavailable_dates)
     }
+ 
