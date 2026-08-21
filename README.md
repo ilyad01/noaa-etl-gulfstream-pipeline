@@ -1,7 +1,7 @@
 # NOAA Gulf Stream SST ETL Pipeline
 ## Project Overview
 
-This project is a simple ETL pipeline built with Python that retrieves daily sea surface temperature (SST) data from NOAA, processes the data, performs basic quality checks, and saves the results to local files.
+This project is a simple ETL pipeline built with Python that retrieves daily sea surface temperature (SST) data from NOAA, processes SST data for multiple geographic points along the Gulf Stream, performs basic quality checks, and saves the results to local files.
 
 The project demonstrates a simple end-to-end data engineering workflow:
 
@@ -27,9 +27,9 @@ The pipeline connects to the NOAA dataset and loads it using "xarray".
 
 ### 2. Transform
 
-The required date and geographic coordinates are selected from the dataset.
+The pipeline generates a series of dates based on the configured date range and frequency.
 
-The pipeline extracts the corresponding SST value for the requested location.
+For each date, SST data is extracted for multiple geographic points along the Gulf Stream using the nearest available grid points.
 
 ### 3. Validate
 
@@ -65,10 +65,10 @@ Pipeline parameters are stored in config.py.
 
 The main configuration parameters are:
 
-- TARGET_LAT — target latitude
-- TARGET_LON — target longitude
-- START_DATE — start date of the dataset
-- END_DATE — end date of the dataset
+- START_DATE — start date of the analysis period
+- END_DATE — end date of the analysis period
+- DATE_FREQUENCY — frequency used to select dates for analysis
+- GULF_STREAM_POINTS — geographic points along the Gulf Stream
 - OUTPUT_FILE — output CSV file
 - QUALITY_REPORT_FILE — data quality report
 
@@ -95,16 +95,25 @@ The pipeline will:
 ## Example Output
 Example pipeline result:
 ```text
-Date: 2026-08-12T00:00:00
-Latitude: 40.125
-Longitude: -69.875
-SST: 25.09 °C
+Date: 2026-08-01
+Point: GS-1
+Latitude: 32.125
+Longitude: -77.875
+SST: 28.4 °C
+Status: success
+
+Date: 2026-08-01
+Point: GS-2
+Latitude: 35.125
+Longitude: -73.875
+SST: 27.1 °C
+Status: success
 ```
 
 ## Output Files
-sst_data.csv — contains the processed SST result for the requested location and date.
-quality_report.json — contains the results of the data quality checks.
-pipeline.log — contains information about pipeline execution, including processing steps and errors.
+- `sst_data.csv` — contains SST data for multiple points along the Gulf Stream across the selected dates.
+- `quality_report.json` — contains the results of the data quality checks.
+- `pipeline.log` — contains information about pipeline execution, including processing steps and errors.
 
 ## Technologies
 - Python
@@ -128,14 +137,14 @@ pipeline.log — contains information about pipeline execution, including proces
 - Modular Python code
 
 ## What This Project Demonstrates
-- Building a modular Python ETL pipeline
+- Building a modular ETL pipeline in Python
 - Working with external scientific data sources
-- Processing NetCDF data with Xarray
-- Parameter validation and error handling
-- Data quality monitoring
-- Structured logging
+- Processing time series data for multiple geographic points
+- Parameter validation and data quality checks
+- Error handling and logging
 - Configuration management
 - Generating CSV and JSON outputs
+- Preparing data for analytical visualization
 
 ## Purpose
 This project was created as a practical example of a Python-based ETL pipeline for data engineering tasks.
