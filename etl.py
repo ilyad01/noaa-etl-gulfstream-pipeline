@@ -83,7 +83,7 @@ def get_sst(ds, target_date, target_lat, target_lon):
     actual_lon = point.lon.values.item()
 
     # Get SST value
-    sst_value = point.values.item()
+    sst_value = round(point.values.item(), 1)
 
     # Check missing value
     if np.isnan(sst_value):
@@ -145,23 +145,24 @@ def get_sst_timeseries(ds, dates, points):
     return results
 
 
-def run_pipeline(ds, start_date, end_date, points):
+def run_pipeline(ds, start_date, end_date, DATE_FREQUENCY, gulf_stream_points):
 
     logger.info(
         f"Starting pipeline for {start_date} to {end_date}, "
-        f"location: {len(points)}"
+        f"location: {len(gulf_stream_points)}"
     )
 
     dates = pd.date_range(
         start=start_date,
         end=end_date,
-        freq="D"
+        freq=DATE_FREQUENCY
     )
+
 
     results = get_sst_timeseries(
         ds,
         dates,
-        points
+        gulf_stream_points
     )
 
     df = pd.DataFrame(results)

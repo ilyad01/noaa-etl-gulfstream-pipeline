@@ -4,6 +4,7 @@ import json
 import xarray as xr
 
 from config import (
+    DATE_FREQUENCY,
     LOG_DIR,
     NOAA_URL,
     START_DATE,
@@ -60,6 +61,7 @@ def main():
                 ds,
                 START_DATE,
                 END_DATE,
+                DATE_FREQUENCY,
                 GULF_STREAM_POINTS
             )
 
