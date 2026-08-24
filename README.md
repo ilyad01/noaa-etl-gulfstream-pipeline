@@ -129,7 +129,7 @@ The dashboard allows users to explore SST patterns across different locations an
 
 ### Dashboard Preview
 
-![Power BI Dashboard](images/powerbi_dashboard.png)
+![Power BI Dashboard](images/powerbi_dashboard.PNG)
 
 ## Technologies
 - Python
