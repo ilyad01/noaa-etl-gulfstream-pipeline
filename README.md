@@ -3,9 +3,9 @@
 
 This project is a simple ETL pipeline built with Python that retrieves daily sea surface temperature (SST) data from NOAA, processes SST data for multiple geographic points along the Gulf Stream, performs basic quality checks, and saves the results to local files.
 
-The project demonstrates a simple end-to-end data engineering workflow:
+The project demonstrates a simple end-to-end data engineering and BI workflow:
 
-**Extract → Transform → Validate → Load**
+**Extract → Transform → Validate → Load → Visualize**
 ## Data Source
 
 The pipeline uses NOAA's publicly available daily NOAA OISST sea surface temperature dataset.
@@ -115,12 +115,29 @@ Status: success
 - `quality_report.json` — contains the results of the data quality checks.
 - `pipeline.log` — contains information about pipeline execution, including processing steps and errors.
 
+## Power BI Dashboard
+The processed SST data is visualized in an interactive Power BI dashboard.
+The dashboard provides both geographical and time-series views of Sea Surface Temperature across the selected Gulf Stream locations.
+
+### Dashboard Features
+- **KPI Cards** — Minimum, Average and Maximum Sea Surface Temperature, and the number of monitored locations.
+- **Sea Surface Temperature Over Time** — line chart showing SST dynamics for each location.
+- **Sea Surface Temperature by Location** — interactive map showing the geographic distribution of the selected locations, with bubble size reflecting SST values.
+- **Interactive Filtering** — selecting a location on the line chart filters the map accordingly.
+
+The dashboard allows users to explore SST patterns across different locations and dates and provides a visual overview of the processed NOAA data.
+
+### Dashboard Preview
+
+![Power BI Dashboard](images/powerbi_dashboard.png)
+
 ## Technologies
 - Python
 - Pandas
 - Xarray
 - NumPy
 - NOAA data
+- Power BI
 - CSV
 - JSON
 - Logging
@@ -145,6 +162,8 @@ Status: success
 - Configuration management
 - Generating CSV and JSON outputs
 - Preparing data for analytical visualization
+- Building an interactive Power BI dashboard
+- Connecting processed data to BI visualizations
 
 ## Purpose
 This project was created as a practical example of a Python-based ETL pipeline for data engineering tasks.
